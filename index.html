@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Mind School - ماستر مايند سكول</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #1a237e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+            border: 3px solid #1a237e;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background-color: #1a237e;
+        }
+
+        .tab-btn {
+            background-color: #ffffff;
+            color: #1a237e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: #ffeb3b;
+            color: #1a237e;
+            transform: scale(1.05);
+        }
+
+        .header-section {
+            padding: 25px 20px 15px 20px;
+            text-align: center;
+            background: #fff;
+            border-bottom: 2px dashed #ddd;
+        }
+
+        .brand-english {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #1a237e;
+        }
+        .brand-english .pink { color: #e91e63; }
+        .brand-english .orange { color: #ff5722; }
+        .brand-english .green { color: #00c853; }
+
+        .brand-arabic {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-top: 5px;
+        }
+        .brand-arabic .pink { color: #e91e63; }
+        .brand-arabic .orange { color: #ff5722; }
+        .brand-arabic .green { color: #00c853; }
+
+        .contact-banner {
+            background-color: #1a237e;
+            color: #ffffff;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top: 2px solid #ffeb3b;
+            border-bottom: 2px solid #ffeb3b;
+        }
+
+        .poster-pane {
+            display: none;
+            padding: 30px 20px;
+            text-align: center;
+            background-color: #fff;
+            animation: fadeInPane 0.5s ease-in-out;
+        }
+
+        .poster-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeInPane {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slogan-badge {
+            background-color: #ffeb3b;
+            color: #1a237e;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(255, 235, 59, 0.4);
+        }
+
+        .day-box {
+            background-color: #1a237e;
+            color: #ffeb3b;
+            padding: 15px 30px;
+            font-size: 26px;
+            font-weight: 900;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 15px 0;
+            padding: 0;
+            display: inline-block;
+            text-align: right;
+        }
+
+        .features-list li {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 8px 0;
+        }
+
+        .action-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            text-align: center;
+            border-top: 2px dashed #ddd;
+        }
+
+        .register-btn {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+            transition: 0.3s;
+        }
+
+        .register-btn:hover {
+            background-color: #1b5e20;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            text-align: right;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-btn:hover { color: #000; }
+
+        .modal-content h2 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #1a237e;
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0d1256;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('poster1')">أفواج السبت</button>
+            <button class="tab-btn" onclick="switchTab('poster2')">أفواج الجمعة</button>
+            <button class="tab-btn" onclick="switchTab('poster3')">أفواج الثلاثاء</button>
+        </div>
+
+        <div class="header-section">
+            <div class="brand-english">
+                MASTER <span class="pink">MI</span><span class="orange">ND</span> <span class="green">S</span>CHOOL
+            </div>
+            <div class="brand-arabic">
+                ماستر <span class="pink">ماي</span><span class="orange">ند</span> سك<span class="green">و</span>ل
+            </div>
+        </div>
+
+        <div class="contact-banner">
+            <span>📞 0661 33 40 49</span>
+            <span>|</span>
+            <span>📍 DELY BRAHIM</span>
+        </div>
+
+        <div id="poster1" class="poster-pane active">
+            <div class="slogan-badge">معا نحو مستقبل أفضل 💯</div>
+            <br>
+            <div class="day-box">أفواج يوم السبت 📅</div>
+        </div>
+
+        <div id="poster2" class="poster-pane">
+            <div class="slogan-badge">معا نحو مستقبل أفضل 💯</div>
+            <br>
+            <div class="day-box" style="background-color: #e91e63;">أفواج يوم الجمعة 📢</div>
+            <div>
+                <ul class="features-list">
+                    <li>✔️ دروس خصوصية</li>
+                    <li>✔️ مرافقة مستمرة</li>
+                    <li>✔️ متابعة فردية</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="poster3" class="poster-pane">
+            <div class="slogan-badge">معا نحو مستقبل أفضل 💯</div>
+            <br>
+            <div class="day-box" style="background-color: #ff5722;">أفواج يوم الثلاثاء 🚀</div>
+            <div style="font-size: 20px; font-weight: bold; color: #1a237e; margin-top: 10px;">
+                ✨ بالعلـم نصنـع الفرق ✨
+            </div>
+        </div>
+
+        <div class="action-container">
+            <button class="register-btn" onclick="openModal('regModal')">تسجيل الآن 📝</button>
+        </div>
+    </div>
+
+    <!-- نافذة استمارة التسجيل -->
+    <div id="regModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('regModal')">&times;</span>
+            <h2>استمارة التسجيل في المدرسة</h2>
+            <!-- استبدل الرابط أدناه برابط Formspree الخاص بك -->
+            <form action="https://formspree.io/f/moejkbnr" method="POST" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label>الاسم واللقب:</label>
+                    <input type="text" name="الاسم_واللقب" required placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label>السنة الدراسية:</label>
+                    <input type="text" name="السنة_الدراسية" required placeholder="مثال: السنة الأولى ثانوي">
+                </div>
+                <div class="form-group">
+                    <label>المواد المراد دراستها:</label>
+                    <input type="text" name="المواد" required placeholder="مثال: رياضيات، فيزياء...">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف:</label>
+                    <input type="tel" name="رقم_الهاتف" required placeholder="06xxxxxxxx" dir="ltr" style="text-align: right;">
+                </div>
+                <div class="form-group">
+                    <label>نوع الدراسة:</label>
+                    <select name="نوع_الدراسة" required>
+                        <option value="">اختر النوع...</option>
+                        <option value="فوج">فوج (مجموعات)</option>
+                        <option value="دروس فردية">دروس فردية (خصوصية)</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">تأكيد وإرسال التسجيل</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(posterId) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const panes = document.querySelectorAll('.poster-pane');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            if(posterId === 'poster1') buttons[0].classList.add('active');
+            else if(posterId === 'poster2') buttons[1].classList.add('active');
+            else if(posterId === 'poster3') buttons[2].classList.add('active');
+
+            document.getElementById(posterId).classList.add('active');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert("تم إرسال تسجيلك بنجاح! سنتواصل معك قريباً.");
+                    form.reset();
+                    closeModal('regModal');
+                } else {
+                    alert("حدث خطأ أثناء الإرسال، تأكد من إعداد الرابط.");
+                }
+            }).catch(error => {
+                alert("حدث خطأ في الاتصال بالإنترنت.");
+            });
+        }
+    </script>
+
+</body>
+</html>
